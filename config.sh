@@ -18,3 +18,9 @@ QCOW_SIZE=10
 
 # Define the qemu image name in absolute path
 QEMU_IMG_NAME='/tmp/default-ubuntu-test.img'
+
+#Proxy settings
+HTTP_PROXY=''
+HTTPS_PROXY=''
+FTP_PROXY=''
+
