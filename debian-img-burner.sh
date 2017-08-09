@@ -2,13 +2,26 @@
 
 #!/bin/bash -x
 
-##############################################################################
-##############################################################################
 SRC_DIR=$PWD
 . $SRC_DIR/config.sh
 
+##############################################################################
+DISK_MNT=/mnt/qemu-disk
+export http_proxy=$HTTP_PROXY
+export https_proxy=$HTTPS_PROXY
+export ftp_proxy=$FTP_PROXY
+##############################################################################
+
 function install_prereq {
     apt-get install -y debootstrap qemu-system qemu-kvm qemu-utils gdisk
+}
+
+# Clean up function to clear out system state.
+function cleanup() {
+    umount /dev/nbd0p2
+    rm -rf $DISK_MNT
+    qemu-nbd -d /dev/nbd0
+    rm -rf $QEMU_IMG_NAME
 }
 
 # Pass the error code, exit-state and error string to the function.
@@ -41,13 +54,21 @@ EEOF
 }
 
 # function to attach the image to nbd and format it.
-function nbd_attach_format {
+function nbd_attach_format_install {
     modprobe nbd max_part=32
-    qemu-nbd -d /dev/nbd0
     qemu-nbd -c /dev/nbd0 $QEMU_IMG_NAME
     exit_on_error $? 1 "ERR: Failed to init nbd, cannot create image"
     fdisk_part
     exit_on_error $? 1 "ERR: Failed to do partition"
+    mkswap /dev/nbd0p1
+    exit_on_error $? 1 "ERR: Failed to create swap partition"
+    mkfs.ext3 /dev/nbd0p2
+    exit_on_error $? 1 "ERR: Failed to format partition"
+    mkdir -p $DISK_MNT
+    mount /dev/nbd0p2 $DISK_MNT
+    exit_on_error $? 1 "ERR: Failed to mount disk,"
+    debootstrap --include=$DEFAULT_IMG_APPS,$IMG_APPS $IMG_SUITE $DISK_MNT \
+    $IMG_MIRROR_URL
 }
 
 function create_qcow_disk {
@@ -70,7 +91,6 @@ function create_qcow_disk {
         gpt='10G-ubuntu-gpt-disk'
         ;;
     esac
-    rm -rf $QEMU_IMG_NAME
     echo "Creating the disk of size $QCOW_SIZE and diskfile $gpt"
     qemu-img create -f qcow2 $QEMU_IMG_NAME $QCOW_SIZE
     exit_on_error $? 1 "ERR:Failed to create qemu-img"
@@ -79,8 +99,9 @@ function create_qcow_disk {
 
 function main {
     install_prereq
+    cleanup
     create_qcow_disk
-    nbd_attach_format
+    nbd_attach_format_install
 }
 
 main
