@@ -3,7 +3,6 @@
 #!/bin/bash -x
 
 ##############################################################################
-QEMU_IMG_NAME='default-ubuntu-test.img'
 ##############################################################################
 SRC_DIR=$PWD
 . $SRC_DIR/config.sh
@@ -11,7 +10,6 @@ SRC_DIR=$PWD
 function install_prereq {
     apt-get install -y debootstrap qemu-system qemu-kvm qemu-utils gdisk
 }
-
 
 # Pass the error code, exit-state and error string to the function.
 # $1 : return error code.

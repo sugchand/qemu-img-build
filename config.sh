@@ -15,3 +15,6 @@ IMG_SUITE=zesty
 #QCOW image size, can be 10, 15, 20
 # By default it is 10(in GBs)
 QCOW_SIZE=10
+
+# Define the qemu image name in absolute path
+QEMU_IMG_NAME='/tmp/default-ubuntu-test.img'
