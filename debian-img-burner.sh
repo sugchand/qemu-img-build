@@ -103,6 +103,15 @@ echo "Updating root password"
 
 echo "${ROOT_PWD}\n${ROOT_PWD}" | passwd root
 
+#Add a new user for the ssh log-in support.
+adduser sugesh --gecos "Sugesh Chandran,2017,1234567890,1234567890" --disabled-password
+
+echo "${ROOT_PWD}\n${ROOT_PWD}" | passwd sugesh
+
+#setup the hostname
+echo 'sugesh-vm' > /etc/hostname
+sed -i '/127.0.0.1/d' /etc/hosts
+echo "127.0.0.1\tlocalhost sugesh-vm" >> /etc/hosts
 umount /proc/ /sys/ /dev/
 
 EOL
