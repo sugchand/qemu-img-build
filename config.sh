@@ -1,7 +1,7 @@
 # Configuration file for qcow-img-burner.
 
 #Default set of application, Advised to keep the list as is.
-#DEFAULT_IMG_APPS=build-essential,msr-tools,libssl-dev,openssh-server,openssh-client,openssl,unzip,wget,python
+DEFAULT_IMG_APPS=build-essential,msr-tools,libssl-dev,openssh-server,openssh-client,openssl,unzip,wget,python
 
 #Tools to install in the VM image, append to the list for more apps seperated by comma.
 IMG_APPS=vim,git
