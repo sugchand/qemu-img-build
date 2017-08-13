@@ -2,7 +2,7 @@
 
 #!/bin/bash -x
 
-SRC_DIR=$PWD
+SRC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 . $SRC_DIR/config.sh
 
 ##############################################################################
