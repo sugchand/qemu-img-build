@@ -125,6 +125,44 @@ function update_vm_grubcfg() {
     exit_on_error $? 1 "ERR: Failed to update grub,"
 }
 
+# Function to update fstab with right disk entries.
+function set_fstab() {
+cat >$DISK_MNT/etc/fstab <<EOL
+# /etc/fstab: static file system information.
+#
+# Use 'blkid' to print the universally unique identifier for a
+# device; this may be used with UUID= as a more robust way to name devices
+# that works even if disks are added and removed. See fstab(5).
+#
+# <file system> <mount point>   <type>  <options>       <dump>  <pass>
+# / was on /dev/sda2 during installation
+/dev/sda2 /               ext4    errors=remount-ro 0       1
+# swap was on /dev/sda1 during installation
+/dev/sda1 none            swap    sw              0       0
+
+EOL
+}
+
+# Create the static network configuration file.
+function set_network() {
+cat >$DISK_MNT/etc/network/interfaces <<EOL
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+auto eth0
+iface eth0 inet static
+address 20.0.0.2
+netmask 255.255.254.0
+
+EOL
+}
 # function to attach the image to nbd and format it.
 function nbd_attach_format_install {
     modprobe nbd max_part=32
@@ -177,6 +215,8 @@ function main {
     nbd_attach_format_install
     chroot_setup
     update_vm_grubcfg
+    set_fstab
+    set_network
     cleanup
 }
 
