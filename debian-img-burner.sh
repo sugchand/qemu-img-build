@@ -152,6 +152,37 @@ cat >$DISK_MNT/etc/fstab <<EOL
 EOL
 }
 
+#Function to create apt source list.
+function setup_apt_src() {
+	rm -rf $DISK_MNT/etc/apt/sources.list.d/*
+cat >$DISK_MNT/etc/apt/sources.list <<EOL
+
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE} main restricted
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE}-updates main restricted
+
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE} universe
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE}-updates universe
+
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE} multiverse
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE}-updates multiverse
+
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE}-backports main restricted universe multiverse
+
+
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE}-security main restricted
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE}-security universe
+deb http://archive.ubuntu.com/ubuntu ${IMG_SUITE}-security multiverse
+
+## Uncomment the following two lines to add software from Canonical's
+## 'partner' repository.
+## This software is not part of Ubuntu, but is offered by Canonical and the
+## respective vendors as a service to Ubuntu users.
+deb http://archive.canonical.com/ubuntu ${IMG_SUITE} partner
+# deb-src http://archive.canonical.com/ubuntu ${IMG_SUITE} partne
+
+EOL
+}
+
 # Create the static network configuration file.
 function set_network() {
 cat >$DISK_MNT/etc/network/interfaces <<EOL
@@ -226,6 +257,7 @@ function main {
     update_vm_grubcfg
     set_fstab
     set_network
+    setup_apt_src
     cleanup
 }
 
