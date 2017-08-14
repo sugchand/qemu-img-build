@@ -95,7 +95,7 @@ apt-get install -y sed
 
 # Update the grub command line options.
 sed -i '/GRUB_CMDLINE_LINUX_DEFAULT/d' /etc/default/grub
-echo 'GRUB_CMDLINE_LINUX_DEFAULT="nomodeset"' >> /etc/default/grub
+echo 'GRUB_CMDLINE_LINUX_DEFAULT="nomodeset net.ifnames=0 biosdevname=0"' >> /etc/default/grub
 
 update-grub
 
@@ -197,9 +197,9 @@ iface lo inet loopback
 
 # The primary network interface
 auto eth0
-iface eth0 inet static
-address 20.0.0.2
-netmask 255.255.254.0
+iface eth0 inet dhcp
+#address 20.0.0.2
+#netmask 255.255.254.0
 
 EOL
 }
