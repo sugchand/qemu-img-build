@@ -7,7 +7,7 @@ SRC_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export http_proxy=$HTTP_PROXY
 export https_proxy=$HTTPS_PROXY
 export ftp_proxy=$FTP_PROXY
-QEMU_BIN=/home/sugeshch/repo/ovs_dpdk/qemu/x86_64-softmmu/qemu-system-x86_64
+QEMU_BIN=qemu-system-x86_64
 VNC_PORT=5
 SSH_PORT=10022
 ##############################################################################
