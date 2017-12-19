@@ -14,7 +14,7 @@ IMG_MIRROR_URL=http://archive.ubuntu.com/ubuntu/
 #Image suite name, this can be stable,zesty, xenial
 IMG_SUITE=zesty
 
-#QCOW image size, can be 10, 15, 20
+#QCOW image size, can be 10, 15, 20, 200, 500
 # By default it is 10(in GBs)
 QCOW_SIZE=10
 

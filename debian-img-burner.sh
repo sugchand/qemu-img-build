@@ -236,6 +236,14 @@ function create_qcow_disk {
         QCOW_SIZE='20G'
         gpt='20G-ubuntu-gpt-disk'
         ;;
+        200)
+        QCOW_SIZE='200G'
+        gpt='200G-ubuntu-gpt-disk'
+        ;;
+        500)
+        QCOW_SIZE='500G'
+        gpt='500G-ubuntu-gpt-disk'
+        ;;
         *)
         QCOW_SIZE=10G
         gpt='10G-ubuntu-gpt-disk'
