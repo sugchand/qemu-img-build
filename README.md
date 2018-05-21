@@ -11,6 +11,24 @@ Create qcow images on request on debian host platform. The generated VM image wi
 
 	* Test the qemu image using the 'run-vm.sh' script. User can either ssh or vnc to access the VM.
 
+## Notes
+    * Refer 'https://wiki.ubuntu.com/Releases' to configure release names in 'config.h'
+
+    * Script cannot create an image from outdated/end of life releases.
+
+    * It is noted each release of ubuntu uses different softwares,tools  and configuration for
+      release to release. More details on these specific release changes can found below.
+
+    * It is possible that VM may not have network connectivity due to wrong interface
+      naming. watch out configuration in '/etc/network/interfaces' when network is
+      managed by 'networking' service.
+
+### Ubuntu-18.04(Bionic)
+    * network is being managed by 'network-manager'. Add it to 'IMG_APPS' when building
+      the image.
+    * Network is being managed by 'netplan' from bionic release onwards.
+      Delete interface from '/etc/network/interfaces' to avail the interface to netplan.
+      (may need restart)
 
 
 ***Please feel free to reach me if you face any issues with the script.***
