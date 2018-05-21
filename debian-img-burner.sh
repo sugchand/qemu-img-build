@@ -202,7 +202,17 @@ iface ens3 inet dhcp
 #netmask 255.255.254.0
 
 EOL
+
+#Bionic beaver is now using systemd, netplan for networking so set it up
+mkdir -p $DISK_MNT/etc/netplan
+
+cat >$DISK_MNT/etc/netplan/config.yaml <<EOL
+network:
+        version: 2
+        renderer: NetworkManager
+EOL
 }
+
 # function to attach the image to nbd and format it.
 function nbd_attach_format_install {
     modprobe nbd max_part=32
