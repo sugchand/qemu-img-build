@@ -17,17 +17,17 @@ Create qcow images on request on debian host platform. The generated VM image wi
     * Script cannot create an image from outdated/end of life releases.
 
     * It is noted each release of ubuntu uses different softwares,tools  and configuration for
-      release to release. More details on these specific release changes can found below.
+      OS services. More details on these specific release changes can be found below.
 
     * It is possible that VM may not have network connectivity due to wrong interface
-      naming. watch out configuration in '/etc/network/interfaces' when network is
-      managed by 'networking' service.
+      naming in older releases. watch out configuration in
+      '/etc/network/interfaces' where network is managed by 'networking' service.
 
 ### Ubuntu-18.04(Bionic)
     * network is being managed by 'network-manager'. Add it to 'IMG_APPS' when building
       the image.
-    * Network is being managed by 'netplan' from bionic release onwards.
-      Delete interface from '/etc/network/interfaces' to avail the interface to netplan.
+    * 'netplan' tool is used to configure network. Delete the interface from
+      '/etc/network/interfaces' to avail the interface to netplan.
       (may need restart)
 
 
