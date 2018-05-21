@@ -69,6 +69,8 @@ function set_apt_proxy() {
 # Create a script file to run commands inside the chroot.
 function chroot_script() {
 set_apt_proxy
+APT_INSTALL_APPS="$(echo -e "${IMG_APPS}" | tr -d '[:space:]')"
+APT_INSTALL_APPS=${APT_INSTALL_APPS//,/ }
 cat >$DISK_MNT/$CHROOT_SCRIPT <<EOL
 
 #!/bin/bash -x
@@ -86,7 +88,9 @@ export ftp_proxy=${FTP_PROXY}
 #Make apt install non interactive
 export DEBIAN_FRONTEND=noninteractive
 
-apt-get install -y grub-pc
+apt-get install -y grub-pc grub-common
+
+apt-get -f install -y
 
 grub-install --force /dev/nbd0 --modules="biosdisk part_msdos"
 
@@ -112,6 +116,10 @@ echo "${ROOT_PWD}\n${ROOT_PWD}" | passwd sugesh
 echo 'sugesh-vm' > /etc/hostname
 sed -i '/127.0.0.1/d' /etc/hosts
 echo "127.0.0.1\tlocalhost sugesh-vm" >> /etc/hosts
+
+# Install custom image apps.
+apt-get install -y ${APT_INSTALL_APPS}
+
 umount /proc/ /sys/ /dev/
 
 EOL
@@ -227,7 +235,7 @@ function nbd_attach_format_install {
     mkdir -p $DISK_MNT
     mount /dev/nbd0p2 $DISK_MNT
     exit_on_error $? 1 "ERR: Failed to mount disk,"
-    debootstrap --include=$IMG_KERNEL_APPS,$DEFAULT_IMG_APPS,$IMG_APPS \
+    debootstrap --include=$IMG_KERNEL_APPS,$DEFAULT_IMG_APPS \
     $IMG_SUITE $DISK_MNT $IMG_MIRROR_URL
 }
 
