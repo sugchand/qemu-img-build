@@ -31,4 +31,4 @@ echo "**Login to VM with ssh 'sugesh@localhost -p $SSH_PORT'**"
 echo "***************************************************************"
 echo "**Login to VM with vnc vnc 'vncviewer localhost:$VNC_PORT'**"
 
-$QEMU_BIN -cpu host -enable-kvm -m 4G -smp cores=6 -hda $QEMU_IMG_NAME -net user,net=20.0.0.0/24,host=20.0.0.1,hostfwd=tcp:127.0.0.1:$SSH_PORT-:22 -net nic -vnc :$VNC_PORT
+$QEMU_BIN -cpu host -enable-kvm -m 8G -smp cores=6 -hda $QEMU_IMG_NAME -net user,net=20.0.0.0/24,host=20.0.0.1,hostfwd=tcp:127.0.0.1:$SSH_PORT-:22 -net nic -vnc :$VNC_PORT -nographic
